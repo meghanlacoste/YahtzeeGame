@@ -1,32 +1,57 @@
 # YahtzeeGame
-
 using System;
+
 namespace Bme121
 {
-    class YahtzeePlayer
+    class YahtzeeScoreBox
     {
-        readonly YahtzeeDice dice;
-        readonly YahtzeeScoreCard scoreCard;
+        bool used;
+        int score;
+        readonly string unusedFormat;
+        readonly string zeroFormat;
 
-        public YahtzeePlayer( string playerName )
+        public YahtzeeScoreBox( string unusedFormat, string zeroFormat )
         {
-            dice = new YahtzeeDice( );
-            scoreCard = new YahtzeeScoreCard( playerName );
+            this.used = false;
+            this.score = 0;
+            this.unusedFormat = unusedFormat;
+            this.zeroFormat = zeroFormat;
         }
 
-        public YahtzeeDice Dice
+        public bool Used
         {
-            get { return dice; }
+            get
+            {
+              return used;
+            }
         }
 
-        public YahtzeeScoreCard ScoreCard
+        public int Score
         {
-            get { return scoreCard; }
+            get
+            {
+                return score;
+            }
+            set
+            {
+                score = value;
+                used = true;
+            }
+        }
+
+        public bool TryScore( int value )
+        {
+            if( used ) return false;
+            score = value;
+            used = true;
+            return true;
         }
 
         public override string ToString( )
         {
-            return scoreCard.PlayerName;
+            if( ! used ) return unusedFormat;
+            if( score == 0 ) return zeroFormat;
+            return score.ToString( );
         }
     }
 }
